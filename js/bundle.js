@@ -22,8 +22,13 @@ var PreloaderScene = {
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
 
-    // TODO: load here the assets for the game
-    this.game.load.image('logo', 'images/phaser.png');
+    // image assets
+    // this.game.load.image('logo', 'images/phaser.png');
+    this.game.load.image('background:level1', 'images/bg1.png');
+    this.game.load.image('button', 'images/button.png');
+    this.game.load.image('circuit', 'images/circuit.png');
+    this.game.load.image('connector', 'images/connector.png');
+    this.game.load.image('light', 'images/light.png');
   },
 
   create: function () {
@@ -47,9 +52,16 @@ window.onload = function () {
 
 var PlayScene = {
   create: function () {
-    var logo = this.game.add.sprite(
-      this.game.world.centerX, this.game.world.centerY, 'logo');
-    logo.anchor.setTo(0.5, 0.5);
+    var circuit;
+
+    this.game.add.sprite(0, 0, 'background:level1');
+    this.game.add.sprite(380, 475, 'button');
+    this.game.add.sprite(583, 180, 'light');
+    this.game.add.sprite(583, 430, 'connector');
+
+    // circuit = this.game.add.sprite(393, 198, 'circuit');
+    circuit = this.game.add.sprite(393, 200, 'circuit');
+    circuit.angle -= 45;
   }
 };
 
