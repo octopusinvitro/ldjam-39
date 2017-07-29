@@ -1,13 +1,16 @@
 'use strict';
 
-var Eye = require('./sprites/eye.js');
+var
+  Button = require('./sprites/button.js'),
+  Eye = require('./sprites/eye.js'),
+  PlayScene
+;
 
-var PlayScene = {
+PlayScene = {
   init: function (levelIndex) {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.groundPosition = this.game.world.height - 100;
-    this.buttonPosition = this.groundPosition - 30
   },
 
   create: function () {
@@ -22,9 +25,8 @@ var PlayScene = {
     this.game.physics.arcade.enable(this.ground);
     this.ground.body.immovable = true;
 
-    this.button = this.game.add.sprite(380, this.buttonPosition, 'button');
-    this.game.physics.arcade.enable(this.button);
-    this.button.body.immovable = true;
+    this.button = new Button(this.game, 380, this.groundPosition - 30);
+    this.game.add.existing(this.button);
 
     this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys);
     this.game.add.existing(this.eye);
@@ -37,7 +39,7 @@ var PlayScene = {
     this.eye.update(hitGround);
 
     if (hitButton && this.button.body.touching.up) {
-      this.button.y += this.button.height;
+      this.button.press();
       this.circuit.x = 393;
       this.circuit.y = 198;
       this.circuit.angle = 0;
