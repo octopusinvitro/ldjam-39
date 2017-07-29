@@ -5,6 +5,9 @@ ldjam-39 by
 
 Initial scaffolding generated with [generator-gamejam](https://github.com/belen-albeza/generator-gamejam/).
 
+You can play the game at https://octopusinvitro.github.io/ldjam-39/
+
+
 ## Installation
 
 ### Requirements
