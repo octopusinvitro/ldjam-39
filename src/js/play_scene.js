@@ -2,6 +2,7 @@
 
 var
   Button = require('./sprites/button.js'),
+  Circuit = require('./sprites/circuit.js'),
   Eye = require('./sprites/eye.js'),
   PlayScene
 ;
@@ -18,8 +19,8 @@ PlayScene = {
     this.game.add.sprite(583, 180, 'light');
     this.game.add.sprite(583, 430, 'connector');
 
-    this.circuit = this.game.add.sprite(393, 200, 'circuit');
-    this.circuit.angle = -45;
+    this.circuit = new Circuit(this.game, 393, 200);
+    this.game.add.existing(this.circuit);
 
     this.ground = this.game.add.sprite(0, this.groundPosition, 'ground');
     this.game.physics.arcade.enable(this.ground);
@@ -40,9 +41,7 @@ PlayScene = {
 
     if (hitButton && this.button.body.touching.up) {
       this.button.press();
-      this.circuit.x = 393;
-      this.circuit.y = 198;
-      this.circuit.angle = 0;
+      this.circuit.close();
     }
   }
 };
