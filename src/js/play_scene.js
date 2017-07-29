@@ -17,7 +17,12 @@ PlayScene = {
   create: function () {
     this.game.add.sprite(0, 0, 'background:level1');
     this.game.add.sprite(583, 180, 'light');
-    this.game.add.sprite(583, 430, 'connector');
+
+    this.connector = this.game.add.sprite(583, 430, 'connector');
+    this.game.physics.arcade.enable(this.connector);
+    this.connector.body.immovable = true;
+    this.connector.body.customSeparateX = true;
+    this.connector.body.customSeparateY = true;
 
     this.circuit = new Circuit(this.game, 393, 200);
     this.game.add.existing(this.circuit);
@@ -36,12 +41,19 @@ PlayScene = {
   update: function () {
     var hitGround = this.game.physics.arcade.collide(this.eye, this.ground);
     var hitButton = this.game.physics.arcade.collide(this.eye, this.button);
+    var hitConnector = this.game.physics.arcade.collide(this.eye, this.connector);
 
     this.eye.update(hitGround);
 
     if (hitButton && this.button.body.touching.up) {
       this.button.press();
       this.circuit.close();
+    }
+
+    if (hitConnector && this.circuit.closed) {
+      var centerX = this.connector.x + (this.connector.width/2);
+      var centerY = this.connector.y + (this.connector.height/2);
+      this.eye.charge(centerX, centerY);
     }
   }
 };

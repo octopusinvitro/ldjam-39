@@ -23,6 +23,11 @@ Eye.prototype.update = function(hitGround) {
   this._jump(hitGround);
 };
 
+Eye.prototype.charge = function(centerX, centerY) {
+  this.x = centerX - (this.width/2);
+  this.y = centerY - (this.height/2);
+};
+
 Eye.prototype._move = function() {
   if (this.keys.left.isDown) {
     this.body.velocity.x = -300;
