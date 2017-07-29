@@ -52,12 +52,18 @@ window.onload = function () {
 },{"./play_scene.js":2}],2:[function(require,module,exports){
 'use strict';
 
-var PlayScene = {
+var
+  Button = require('./sprites/button.js'),
+  Circuit = require('./sprites/circuit.js'),
+  Eye = require('./sprites/eye.js'),
+  PlayScene
+;
+
+PlayScene = {
   init: function (levelIndex) {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.groundPosition = this.game.world.height - 100;
-    this.buttonPosition = this.groundPosition - 30
   },
 
   create: function () {
@@ -65,56 +71,119 @@ var PlayScene = {
     this.game.add.sprite(583, 180, 'light');
     this.game.add.sprite(583, 430, 'connector');
 
-    this.circuit = this.game.add.sprite(393, 200, 'circuit');
-    this.circuit.angle = -45;
+    this.circuit = new Circuit(this.game, 393, 200);
+    this.game.add.existing(this.circuit);
 
     this.ground = this.game.add.sprite(0, this.groundPosition, 'ground');
     this.game.physics.arcade.enable(this.ground);
     this.ground.body.immovable = true;
 
-    this.button = this.game.add.sprite(380, this.buttonPosition, 'button');
-    this.game.physics.arcade.enable(this.button);
-    this.button.body.immovable = true;
+    this.button = new Button(this.game, 380, this.groundPosition - 30);
+    this.game.add.existing(this.button);
 
-    this.eye = this.game.add.sprite(32, this.game.world.height - 150, 'eye'),
-    this.game.physics.arcade.enable(this.eye);
-    this.eye.body.bounce.y = 0.2;
-    this.eye.body.gravity.y = 700;
-    this.eye.body.collideWorldBounds = true;
-    this.eye.animations.add('left', [0, 1, 2, 3], 10, true);
-    this.eye.animations.add('right', [5, 6, 7, 8], 10, true);
+    this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys);
+    this.game.add.existing(this.eye);
   },
 
   update: function () {
     var hitGround = this.game.physics.arcade.collide(this.eye, this.ground);
     var hitButton = this.game.physics.arcade.collide(this.eye, this.button);
 
-    this.eye.body.velocity.x = 0;
-
-    if (this.keys.left.isDown) {
-      this.eye.body.velocity.x = -300;
-      this.eye.animations.play('left');
-    } else if (this.keys.right.isDown) {
-      this.eye.body.velocity.x = 300;
-      this.eye.animations.play('right');
-    } else {
-      this.eye.animations.stop();
-      this.eye.frame = 4;
-    }
-
-    if (this.keys.up.isDown && this.eye.body.touching.down && hitGround) {
-      this.eye.body.velocity.y = -600;
-    }
+    this.eye.update(hitGround);
 
     if (hitButton && this.button.body.touching.up) {
-      this.button.y += this.button.height;
-      this.circuit.x = 393;
-      this.circuit.y = 198;
-      this.circuit.angle = 0;
+      this.button.press();
+      this.circuit.close();
     }
   }
 };
 
 module.exports = PlayScene;
+
+},{"./sprites/button.js":3,"./sprites/circuit.js":4,"./sprites/eye.js":5}],3:[function(require,module,exports){
+'use strict';
+
+function Button(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'button');
+
+  this.game.physics.arcade.enable(this);
+  this.body.immovable = true;
+  this.body.collideWorldBounds = true;
+};
+
+Button.prototype = Object.create(Phaser.Sprite.prototype);
+Button.prototype.constructor = Button;
+
+Button.prototype.press = function() {
+  this.y += this.height;
+};
+
+module.exports = Button;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+function Circuit(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'circuit');
+  this.angle = -45;
+};
+
+Circuit.prototype = Object.create(Phaser.Sprite.prototype);
+Circuit.prototype.constructor = Circuit;
+
+Circuit.prototype.close = function() {
+  this.x = 393;
+  this.y = 198;
+  this.angle = 0;
+};
+
+module.exports = Circuit;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+function Eye(game, x, y, keys) {
+  Phaser.Sprite.call(this, game, x, y, 'eye');
+  this.keys = keys;
+
+  this.game.physics.arcade.enable(this);
+  this.body.setSize(32, 48);
+  this.body.bounce.y = 0.2;
+  this.body.gravity.y = 700;
+  this.body.collideWorldBounds = true;
+
+  this.animations.add('left', [0, 1, 2, 3], 10, true);
+  this.animations.add('right', [5, 6, 7, 8], 10, true);
+};
+
+Eye.prototype = Object.create(Phaser.Sprite.prototype);
+Eye.prototype.constructor = Eye;
+
+Eye.prototype.update = function(hitGround) {
+  this.body.velocity.x = 0;
+  this._move();
+  this._jump(hitGround);
+};
+
+Eye.prototype._move = function() {
+  if (this.keys.left.isDown) {
+    this.body.velocity.x = -300;
+    this.animations.play('left');
+  } else if (this.keys.right.isDown) {
+    this.body.velocity.x = 300;
+    this.animations.play('right');
+  } else {
+    this.animations.stop();
+    this.frame = 4;
+  }
+};
+
+Eye.prototype._jump = function(hitGround) {
+  if (this.keys.up.isDown && this.body.touching.down && hitGround) {
+    this.body.velocity.y = -600;
+  }
+};
+
+module.exports = Eye;
 
 },{}]},{},[1]);
