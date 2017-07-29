@@ -28,6 +28,8 @@ var PreloaderScene = {
     this.game.load.image('circuit', 'images/circuit.png');
     this.game.load.image('connector', 'images/connector.png');
     this.game.load.image('light', 'images/light.png');
+    this.game.load.image('ground', 'images/ground.png');
+    this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
   },
 
   create: function () {
