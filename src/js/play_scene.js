@@ -3,7 +3,7 @@
 var
   Button = require('./sprites/button.js'),
   Circuit = require('./sprites/circuit.js'),
-  Connector = require('./sprites/connector.js'),
+  Charger = require('./sprites/charger.js'),
   Eye = require('./sprites/eye.js'),
   PlayScene
 ;
@@ -19,8 +19,8 @@ PlayScene = {
     this.game.add.sprite(0, 0, 'background:level1');
     this.game.add.sprite(583, 180, 'light');
 
-    this.connector = new Connector(this.game, 583, 430);
-    this.game.add.existing(this.connector);
+    this.charger = new Charger(this.game, 583, 430);
+    this.game.add.existing(this.charger);
 
     this.circuit = new Circuit(this.game, 393, 200);
     this.game.add.existing(this.circuit);
@@ -39,7 +39,7 @@ PlayScene = {
   update: function () {
     var hitGround = this.game.physics.arcade.collide(this.eye, this.ground);
     var hitButton = this.game.physics.arcade.collide(this.eye, this.button);
-    var hitConnector = this.game.physics.arcade.collide(this.eye, this.connector);
+    var hitCharger = this.game.physics.arcade.collide(this.eye, this.charger);
 
     this.eye.update(hitGround);
 
@@ -48,8 +48,8 @@ PlayScene = {
       this.circuit.close();
     }
 
-    if (hitConnector && this.circuit.closed) {
-      this.eye.charge(this.connector.center());
+    if (hitCharger && this.circuit.closed) {
+      this.eye.charge(this.charger.center());
     }
   }
 };
