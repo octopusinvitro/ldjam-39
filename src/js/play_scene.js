@@ -2,9 +2,16 @@
 
 var PlayScene = {
   create: function () {
-    var logo = this.game.add.sprite(
-      this.game.world.centerX, this.game.world.centerY, 'logo');
-    logo.anchor.setTo(0.5, 0.5);
+    var circuit;
+
+    this.game.add.sprite(0, 0, 'background:level1');
+    this.game.add.sprite(380, 475, 'button');
+    this.game.add.sprite(583, 180, 'light');
+    this.game.add.sprite(583, 430, 'connector');
+
+    // circuit = this.game.add.sprite(393, 198, 'circuit');
+    circuit = this.game.add.sprite(393, 200, 'circuit');
+    circuit.angle -= 45;
   }
 };
 
