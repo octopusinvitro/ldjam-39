@@ -69,7 +69,12 @@ PlayScene = {
   create: function () {
     this.game.add.sprite(0, 0, 'background:level1');
     this.game.add.sprite(583, 180, 'light');
-    this.game.add.sprite(583, 430, 'connector');
+
+    this.connector = this.game.add.sprite(583, 430, 'connector');
+    this.game.physics.arcade.enable(this.connector);
+    this.connector.body.immovable = true;
+    this.connector.body.customSeparateX = true;
+    this.connector.body.customSeparateY = true;
 
     this.circuit = new Circuit(this.game, 393, 200);
     this.game.add.existing(this.circuit);
@@ -88,12 +93,19 @@ PlayScene = {
   update: function () {
     var hitGround = this.game.physics.arcade.collide(this.eye, this.ground);
     var hitButton = this.game.physics.arcade.collide(this.eye, this.button);
+    var hitConnector = this.game.physics.arcade.collide(this.eye, this.connector);
 
     this.eye.update(hitGround);
 
     if (hitButton && this.button.body.touching.up) {
       this.button.press();
       this.circuit.close();
+    }
+
+    if (hitConnector && this.circuit.closed) {
+      var centerX = this.connector.x + (this.connector.width/2);
+      var centerY = this.connector.y + (this.connector.height/2);
+      this.eye.charge(centerX, centerY);
     }
   }
 };
@@ -126,6 +138,7 @@ module.exports = Button;
 function Circuit(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'circuit');
   this.angle = -45;
+  this.closed = false;
 };
 
 Circuit.prototype = Object.create(Phaser.Sprite.prototype);
@@ -135,6 +148,7 @@ Circuit.prototype.close = function() {
   this.x = 393;
   this.y = 198;
   this.angle = 0;
+  this.closed = true;
 };
 
 module.exports = Circuit;
@@ -163,6 +177,11 @@ Eye.prototype.update = function(hitGround) {
   this.body.velocity.x = 0;
   this._move();
   this._jump(hitGround);
+};
+
+Eye.prototype.charge = function(centerX, centerY) {
+  this.x = centerX - (this.width/2);
+  this.y = centerY - (this.height/2);
 };
 
 Eye.prototype._move = function() {
