@@ -27,7 +27,7 @@ var PreloaderScene = {
     this.game.load.image('background:level1', 'images/bg1.png');
     this.game.load.image('button', 'images/button.png');
     this.game.load.image('circuit', 'images/circuit.png');
-    this.game.load.image('connector', 'images/connector.png');
+    this.game.load.image('charger', 'images/charger.png');
     this.game.load.image('light', 'images/light.png');
     this.game.load.image('ground', 'images/ground.png');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
@@ -55,6 +55,7 @@ window.onload = function () {
 var
   Button = require('./sprites/button.js'),
   Circuit = require('./sprites/circuit.js'),
+  Charger = require('./sprites/charger.js'),
   Eye = require('./sprites/eye.js'),
   PlayScene
 ;
@@ -70,11 +71,8 @@ PlayScene = {
     this.game.add.sprite(0, 0, 'background:level1');
     this.game.add.sprite(583, 180, 'light');
 
-    this.connector = this.game.add.sprite(583, 430, 'connector');
-    this.game.physics.arcade.enable(this.connector);
-    this.connector.body.immovable = true;
-    this.connector.body.customSeparateX = true;
-    this.connector.body.customSeparateY = true;
+    this.charger = new Charger(this.game, 583, 430);
+    this.game.add.existing(this.charger);
 
     this.circuit = new Circuit(this.game, 393, 200);
     this.game.add.existing(this.circuit);
@@ -93,7 +91,7 @@ PlayScene = {
   update: function () {
     var hitGround = this.game.physics.arcade.collide(this.eye, this.ground);
     var hitButton = this.game.physics.arcade.collide(this.eye, this.button);
-    var hitConnector = this.game.physics.arcade.collide(this.eye, this.connector);
+    var hitCharger = this.game.physics.arcade.collide(this.eye, this.charger);
 
     this.eye.update(hitGround);
 
@@ -102,17 +100,15 @@ PlayScene = {
       this.circuit.close();
     }
 
-    if (hitConnector && this.circuit.closed) {
-      var centerX = this.connector.x + (this.connector.width/2);
-      var centerY = this.connector.y + (this.connector.height/2);
-      this.eye.charge(centerX, centerY);
+    if (hitCharger && this.circuit.closed) {
+      this.eye.charge(this.charger.center());
     }
   }
 };
 
 module.exports = PlayScene;
 
-},{"./sprites/button.js":3,"./sprites/circuit.js":4,"./sprites/eye.js":5}],3:[function(require,module,exports){
+},{"./sprites/button.js":3,"./sprites/charger.js":4,"./sprites/circuit.js":5,"./sprites/eye.js":6}],3:[function(require,module,exports){
 'use strict';
 
 function Button(game, x, y) {
@@ -135,6 +131,30 @@ module.exports = Button;
 },{}],4:[function(require,module,exports){
 'use strict';
 
+function Charger(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'charger');
+
+  this.game.physics.arcade.enable(this);
+  this.body.immovable = true;
+  this.body.customSeparateX = true;
+  this.body.customSeparateY = true;
+};
+
+Charger.prototype = Object.create(Phaser.Sprite.prototype);
+Charger.prototype.constructor = Charger;
+
+Charger.prototype.center = function() {
+  return {
+    x: this.x + (this.width/2),
+    y: this.y + (this.height/2)
+  };
+};
+
+module.exports = Charger;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
 function Circuit(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'circuit');
   this.angle = -45;
@@ -153,7 +173,7 @@ Circuit.prototype.close = function() {
 
 module.exports = Circuit;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 function Eye(game, x, y, keys) {
@@ -168,6 +188,8 @@ function Eye(game, x, y, keys) {
 
   this.animations.add('left', [0, 1, 2, 3], 10, true);
   this.animations.add('right', [5, 6, 7, 8], 10, true);
+
+  this.chargeTimeInSeconds = Phaser.Timer.SECOND * 4;
 };
 
 Eye.prototype = Object.create(Phaser.Sprite.prototype);
@@ -179,9 +201,9 @@ Eye.prototype.update = function(hitGround) {
   this._jump(hitGround);
 };
 
-Eye.prototype.charge = function(centerX, centerY) {
-  this.x = centerX - (this.width/2);
-  this.y = centerY - (this.height/2);
+Eye.prototype.charge = function(center) {
+  this.x = center.x - (this.width/2);
+  this.y = center.y - (this.height/2);
 };
 
 Eye.prototype._move = function() {
