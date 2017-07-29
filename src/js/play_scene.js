@@ -3,6 +3,7 @@
 var
   Button = require('./sprites/button.js'),
   Circuit = require('./sprites/circuit.js'),
+  Connector = require('./sprites/connector.js'),
   Eye = require('./sprites/eye.js'),
   PlayScene
 ;
@@ -18,11 +19,8 @@ PlayScene = {
     this.game.add.sprite(0, 0, 'background:level1');
     this.game.add.sprite(583, 180, 'light');
 
-    this.connector = this.game.add.sprite(583, 430, 'connector');
-    this.game.physics.arcade.enable(this.connector);
-    this.connector.body.immovable = true;
-    this.connector.body.customSeparateX = true;
-    this.connector.body.customSeparateY = true;
+    this.connector = new Connector(this.game, 583, 430);
+    this.game.add.existing(this.connector);
 
     this.circuit = new Circuit(this.game, 393, 200);
     this.game.add.existing(this.circuit);
@@ -51,9 +49,7 @@ PlayScene = {
     }
 
     if (hitConnector && this.circuit.closed) {
-      var centerX = this.connector.x + (this.connector.width/2);
-      var centerY = this.connector.y + (this.connector.height/2);
-      this.eye.charge(centerX, centerY);
+      this.eye.charge(this.connector.center());
     }
   }
 };

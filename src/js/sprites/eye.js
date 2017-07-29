@@ -12,6 +12,8 @@ function Eye(game, x, y, keys) {
 
   this.animations.add('left', [0, 1, 2, 3], 10, true);
   this.animations.add('right', [5, 6, 7, 8], 10, true);
+
+  this.chargeTimeInSeconds = Phaser.Timer.SECOND * 4;
 };
 
 Eye.prototype = Object.create(Phaser.Sprite.prototype);
@@ -23,9 +25,9 @@ Eye.prototype.update = function(hitGround) {
   this._jump(hitGround);
 };
 
-Eye.prototype.charge = function(centerX, centerY) {
-  this.x = centerX - (this.width/2);
-  this.y = centerY - (this.height/2);
+Eye.prototype.charge = function(center) {
+  this.x = center.x - (this.width/2);
+  this.y = center.y - (this.height/2);
 };
 
 Eye.prototype._move = function() {
