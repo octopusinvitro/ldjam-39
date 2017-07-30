@@ -70,6 +70,18 @@ var PreloaderScene = {
     this.game.load.spritesheet('light', 'images/light.png', 40, 39);
     this.game.load.image('ground', 'images/ground.jpg');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
+
+    // audio assets
+    var sfx = {
+      'jump': 'jump.wav',
+      'timeover': 'timeover.wav',
+      'on': 'on.wav',
+      'charge': 'charge.wav',
+      'background': 'background.ogg'
+    };
+    Object.keys(sfx).forEach(function (key) {
+      this.game.load.audio(key, 'audio/' + sfx[key]);
+    }.bind(this));
   },
 
   create: function () {
@@ -106,6 +118,15 @@ PlayScene = {
     this.currentLevel = levelIndex;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
+    this.sfx = {
+      jump: this.game.add.audio('jump'),
+      timeover: this.game.add.audio('timeover'),
+      on: this.game.add.audio('on'),
+      charge: this.game.add.audio('charge')
+    };
+    this.backgroundMusic = this.game.add.audio('background');
+    this.backgroundMusic.fadeIn(1200, true);
+    this.backgroundMusic.play();
   },
 
   create: function () {
@@ -127,7 +148,7 @@ PlayScene = {
     this.game.physics.arcade.enable(this.ground);
     this.ground.body.immovable = true;
 
-    this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys);
+    this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys, this.sfx);
     this.game.add.existing(this.eye);
 
     this.timer = new BatteryTimer(this.game, 10);
@@ -144,16 +165,19 @@ PlayScene = {
     this.eye.update(hitGround);
 
     if (hitButton && this.button.body.touching.up) {
+      this.sfx.on.play();
       this.button.press();
       this.circuit.close();
       this.light.turnOn();
     }
 
     if (this.timer.stopped && !this.circuit.closed) {
+      this.sfx.timeover.play();
       this.repeatLevel();
     }
 
     if (hitCharger && this.circuit.closed) {
+      this.sfx.charge.play();
       this.eye.charge(this.charger.center());
       this.timer.stop();
       this.game.time.events.add(this.eye.chargeTimeInSeconds, this.nextLevel, this);
@@ -161,10 +185,12 @@ PlayScene = {
   },
 
   repeatLevel: function () {
+    this.backgroundMusic.stop();
     this.game.state.restart(true, false, this.currentLevel);
   },
 
   nextLevel: function () {
+    this.backgroundMusic.stop();
     this.game.state.restart(true, false, this.currentLevel + 1);
   },
 };
@@ -240,9 +266,10 @@ module.exports = Circuit;
 },{}],7:[function(require,module,exports){
 'use strict';
 
-function Eye(game, x, y, keys) {
+function Eye(game, x, y, keys, sfx) {
   Phaser.Sprite.call(this, game, x, y, 'eye');
   this.keys = keys;
+  this.sfx = sfx;
 
   this.game.physics.arcade.enable(this);
   this.body.setSize(32, 48);
@@ -285,6 +312,7 @@ Eye.prototype._move = function() {
 
 Eye.prototype._jump = function(hitGround) {
   if (this.keys.up.isDown && this.body.touching.down && hitGround) {
+    this.sfx.jump.play()
     this.body.velocity.y = -600;
   }
 };
