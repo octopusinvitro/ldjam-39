@@ -24,7 +24,7 @@ var PreloaderScene = {
     // image assets
     // this.game.load.image('logo', 'images/phaser.png');
     this.game.load.image('background:level1', 'images/bg1.jpg');
-    this.game.load.image('button', 'images/button.gif');
+    this.game.load.image('button1', 'images/button1.gif');
     this.game.load.image('circuit', 'images/circuit.gif');
     this.game.load.image('charger', 'images/charger.png');
     this.game.load.spritesheet('light', 'images/light.png', 40, 40);

@@ -1,7 +1,7 @@
 'use strict';
 
-function Button(game, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'button');
+function Button(game, x, y, sprite) {
+  Phaser.Sprite.call(this, game, x, y, sprite);
 
   this.game.physics.arcade.enable(this);
   this.body.immovable = true;
