@@ -4,6 +4,7 @@ function Charger(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'charger');
 
   this.game.physics.arcade.enable(this);
+  this.body.setSize(200, 300);
   this.body.immovable = true;
   this.body.customSeparateX = true;
   this.body.customSeparateY = true;

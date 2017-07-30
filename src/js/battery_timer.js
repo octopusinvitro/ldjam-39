@@ -7,7 +7,7 @@ function BatteryTimer(game, maximumBattery) {
 
 BatteryTimer.prototype.start = function() {
   this.battery = this.maximumBattery;
-  this.batteryText = this.game.add.text(16, 16, 'BATTERY: ' + this.maximumBattery, { fontSize: '12px', fill: '#E99792' });
+  this.batteryText = this._setText();
   this.batteryTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.tick, this);
   this.stopped = false;
 };
@@ -24,5 +24,14 @@ BatteryTimer.prototype.stop = function() {
   this.game.time.events.remove(this.batteryTimer);
   this.stopped = true;
 };
+
+BatteryTimer.prototype._setText = function() {
+  var fontStyle = {
+    font: '12px "Graduate"',
+    fill: '#E99792',
+    fontSize: '12px'
+  };
+  return this.game.add.text(64, 70, 'BATTERY: ' + this.maximumBattery, fontStyle);
+}
 
 module.exports = BatteryTimer;
