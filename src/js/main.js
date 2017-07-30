@@ -27,7 +27,7 @@ var PreloaderScene = {
     this.game.load.image('button1', 'images/button1.gif');
     this.game.load.image('circuit', 'images/circuit.gif');
     this.game.load.image('charger', 'images/charger.png');
-    this.game.load.spritesheet('light', 'images/light.png', 40, 40);
+    this.game.load.spritesheet('light', 'images/light.png', 40, 39);
     this.game.load.image('ground', 'images/ground.jpg');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
   },

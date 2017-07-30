@@ -5,6 +5,7 @@ var
   Circuit = require('./sprites/circuit.js'),
   Charger = require('./sprites/charger.js'),
   Eye = require('./sprites/eye.js'),
+  Light = require('./sprites/light.js'),
   BatteryTimer = require('./battery_timer.js'),
   PlayScene
 ;
@@ -18,7 +19,9 @@ PlayScene = {
 
   create: function () {
     this.game.add.sprite(0, 0, 'background:level1');
-    this.game.add.sprite(583, 180, 'light');
+
+    this.light = new Light(this.game, 583, 180);
+    this.game.add.existing(this.light);
 
     this.charger = new Charger(this.game, 583, 430);
     this.game.add.existing(this.charger);
@@ -52,6 +55,7 @@ PlayScene = {
     if (hitButton && this.button.body.touching.up) {
       this.button.press();
       this.circuit.close();
+      this.light.turnOn();
     }
 
     if (this.timer.stopped && !this.circuit.closed) {
