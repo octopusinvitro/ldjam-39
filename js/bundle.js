@@ -90,7 +90,7 @@ var PreloaderScene = {
 };
 
 
-window.onload = function () {
+var startGame = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
@@ -98,6 +98,14 @@ window.onload = function () {
   game.state.add('play', PlayScene);
 
   game.state.start('boot');
+};
+
+window.onload = function () {
+  document.getElementById('play').addEventListener('click', function (event) {
+    event.preventDefault();
+    document.getElementById('overlay').style.display = 'none';
+    startGame();
+  });
 };
 
 },{"./play_scene.js":3}],3:[function(require,module,exports){
