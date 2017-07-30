@@ -7,12 +7,11 @@ var
   Eye = require('./sprites/eye.js'),
   Light = require('./sprites/light.js'),
   BatteryTimer = require('./battery_timer.js'),
-  PlayScene
+  Level1
 ;
 
-PlayScene = {
-  init: function (levelIndex) {
-    this.currentLevel = levelIndex;
+Level1 = {
+  init: function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.sfx = {
@@ -83,13 +82,13 @@ PlayScene = {
 
   repeatLevel: function () {
     this.backgroundMusic.stop();
-    this.game.state.restart(true, false, this.currentLevel);
+    this.game.state.restart(true, false);
   },
 
   nextLevel: function () {
     this.backgroundMusic.stop();
-    this.game.state.restart(true, false, this.currentLevel + 1);
+    this.game.state.start('level1', true, false);
   },
 };
 
-module.exports = PlayScene;
+module.exports = Level1;

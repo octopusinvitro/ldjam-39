@@ -1,6 +1,6 @@
 'use strict';
 
-var PlayScene = require('./play_scene.js');
+var Level1 = require('./level1.js');
 
 
 var BootScene = {
@@ -45,7 +45,7 @@ var PreloaderScene = {
   },
 
   create: function () {
-    this.game.state.start('play', true, false, 1);
+    this.game.state.start('level1', true, false);
   }
 };
 
@@ -55,7 +55,7 @@ var startGame = function () {
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
-  game.state.add('play', PlayScene);
+  game.state.add('level1', Level1);
 
   game.state.start('boot');
 };
