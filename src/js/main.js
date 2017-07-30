@@ -23,12 +23,12 @@ var PreloaderScene = {
 
     // image assets
     // this.game.load.image('logo', 'images/phaser.png');
-    this.game.load.image('background:level1', 'images/bg1.png');
-    this.game.load.image('button', 'images/button.png');
-    this.game.load.image('circuit', 'images/circuit.png');
+    this.game.load.image('background:level1', 'images/bg1.jpg');
+    this.game.load.image('button', 'images/button.gif');
+    this.game.load.image('circuit', 'images/circuit.gif');
     this.game.load.image('charger', 'images/charger.png');
-    this.game.load.image('light', 'images/light.png');
-    this.game.load.image('ground', 'images/ground.png');
+    this.game.load.spritesheet('light', 'images/light.png', 40, 40);
+    this.game.load.image('ground', 'images/ground.jpg');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
   },
 
