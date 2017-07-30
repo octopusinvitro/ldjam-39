@@ -21,6 +21,9 @@ PlayScene = {
       on: this.game.add.audio('on'),
       charge: this.game.add.audio('charge')
     };
+    this.backgroundMusic = this.game.add.audio('background');
+    this.backgroundMusic.fadeIn(1200, true);
+    this.backgroundMusic.play();
   },
 
   create: function () {
@@ -79,10 +82,12 @@ PlayScene = {
   },
 
   repeatLevel: function () {
+    this.backgroundMusic.stop();
     this.game.state.restart(true, false, this.currentLevel);
   },
 
   nextLevel: function () {
+    this.backgroundMusic.stop();
     this.game.state.restart(true, false, this.currentLevel + 1);
   },
 };
