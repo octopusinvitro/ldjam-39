@@ -15,7 +15,7 @@ BatteryTimer.prototype.start = function() {
 
 BatteryTimer.prototype.tick = function() {
   this.battery -= 1;
-  this.batteryText.text = 'BATTERY: ' + this.battery;
+  this.batteryText.text = this.battery;
   if (this.battery == 0) {
     this.stop();
   }
@@ -30,9 +30,9 @@ BatteryTimer.prototype._setText = function() {
   var fontStyle = {
     font: '12px "Graduate"',
     fill: '#E99792',
-    fontSize: '12px'
+    fontSize: '32px'
   };
-  return this.game.add.text(64, 70, 'BATTERY: ' + this.maximumBattery, fontStyle);
+  return this.game.add.text(64, 58, this.maximumBattery, fontStyle);
 }
 
 module.exports = BatteryTimer;
@@ -139,6 +139,12 @@ PlayScene = {
 
   create: function () {
     this.game.add.sprite(0, 0, 'background:level1');
+    var fontStyle = {
+      font: '12px "Graduate"',
+      fill: '#E99792',
+      fontSize: '32px'
+    };
+    this.game.add.text(640, 58, 'LEVEL 1', fontStyle);
 
     this.light = new Light(this.game, 583, 180);
     this.game.add.existing(this.light);
@@ -282,13 +288,13 @@ function Eye(game, x, y, keys, sfx) {
   this.game.physics.arcade.enable(this);
   this.body.setSize(32, 48);
   this.body.bounce.y = 0.2;
-  this.body.gravity.y = 700;
+  this.body.gravity.y = 1000;
   this.body.collideWorldBounds = true;
 
   this.animations.add('left', [0, 1, 2, 3], 10, true);
   this.animations.add('right', [5, 6, 7, 8], 10, true);
 
-  this.chargeTimeInSeconds = Phaser.Timer.SECOND * 4;
+  this.chargeTimeInSeconds = Phaser.Timer.SECOND * 2;
 };
 
 Eye.prototype = Object.create(Phaser.Sprite.prototype);
@@ -321,7 +327,7 @@ Eye.prototype._move = function() {
 Eye.prototype._jump = function(hitGround) {
   if (this.keys.up.isDown && this.body.touching.down && hitGround) {
     this.sfx.jump.play()
-    this.body.velocity.y = -600;
+    this.body.velocity.y = -700;
   }
 };
 
