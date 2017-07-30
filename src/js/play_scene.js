@@ -16,7 +16,8 @@ PlayScene = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.sfx = {
-      jump: this.game.add.audio('jump')
+      jump: this.game.add.audio('jump'),
+      on: this.game.add.audio('on'),
     };
   },
 
@@ -56,6 +57,7 @@ PlayScene = {
     this.eye.update(hitGround);
 
     if (hitButton && this.button.body.touching.up) {
+      this.sfx.on.play();
       this.button.press();
       this.circuit.close();
       this.light.turnOn();
