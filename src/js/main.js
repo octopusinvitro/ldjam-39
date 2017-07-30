@@ -33,7 +33,7 @@ var PreloaderScene = {
   },
 
   create: function () {
-    this.game.state.start('play');
+    this.game.state.start('play', true, false, 1);
   }
 };
 

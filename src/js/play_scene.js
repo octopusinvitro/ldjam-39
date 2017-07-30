@@ -11,6 +11,7 @@ var
 
 PlayScene = {
   init: function (levelIndex) {
+    this.currentLevel = levelIndex;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
   },
@@ -53,18 +54,24 @@ PlayScene = {
       this.circuit.close();
     }
 
-    if (this.timer.stopped) {
+    if (this.timer.stopped && !this.circuit.closed) {
       this.repeatLevel();
     }
 
     if (hitCharger && this.circuit.closed) {
       this.eye.charge(this.charger.center());
+      this.timer.stop();
+      this.game.time.events.add(this.eye.chargeTimeInSeconds, this.nextLevel, this);
     }
   },
 
   repeatLevel: function () {
     this.game.state.restart(true, false, this.currentLevel);
-  }
+  },
+
+  nextLevel: function () {
+    this.game.state.restart(true, false, this.currentLevel + 1);
+  },
 };
 
 module.exports = PlayScene;
