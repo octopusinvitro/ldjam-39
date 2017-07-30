@@ -8,7 +8,6 @@
     <script src="js/bundle.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Graduate" rel="stylesheet">
-
     <style>
         body {
           padding: 0;
@@ -16,10 +15,75 @@
           background: #000;
           font-family: 'Graduate', cursive;
         }
+
+        .overlay {
+          background: url('images/background.jpg');
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          text-align: center;
+          color: #fff;
+        }
+
+        .overlay-title {
+          margin: 75px auto 10px;
+          font-size: 50px;
+        }
+
+        .overlay-tagline {
+          margin-bottom: 50px;
+        }
+
+        .play {
+          background: rgba(0, 0, 0, 0.2);
+          border: none;
+          border-radius: 25px;
+          padding: 30px 70px;
+          font-family: 'Graduate', cursive;
+          font-size: 90px;
+          color: #fff;
+          text-transform: uppercase;
+          outline: none !important;
+        }
+
+        .play:hover {
+          cursor: pointer;
+          color: #222C35;
+        }
+
+        .instructions, .credits {
+          display: inline-block;
+          box-sizing: border-box;
+          width: 49%;
+          vertical-align: top;
+        }
+
+        kbd {
+          font-size: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <div id="game"></div>
+    <div id="game">
+        <div id="overlay" class="overlay">
+            <h1 class="overlay-title">BatteRun</h1>
+            <p class="overlay-tagline">Solve the circuit and charge up!</p>
+            <p><button type="button" id="play" class="play">Play</button></p>
+
+            <div class="instructions">
+                <p>Instructions:</p>
+                <p><kbd>←</kbd> Move left, <kbd>→</kbd> Move right, <kbd>↑</kbd> Jump</p>
+            </div>
+
+            <div class="credits">
+                <p>Code and art by @octopusinvitro</p>
+                <p>Background music by Rolemusic</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
