@@ -34,6 +34,7 @@ var PreloaderScene = {
     // audio assets
     var sfx = {
       'jump': 'jump.wav',
+      'timeover': 'timeover.wav',
       'on': 'on.wav',
       'charge': 'charge.wav',
     };

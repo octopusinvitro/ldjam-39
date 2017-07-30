@@ -17,6 +17,7 @@ PlayScene = {
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.sfx = {
       jump: this.game.add.audio('jump'),
+      timeover: this.game.add.audio('timeover'),
       on: this.game.add.audio('on'),
       charge: this.game.add.audio('charge')
     };
@@ -65,6 +66,7 @@ PlayScene = {
     }
 
     if (this.timer.stopped && !this.circuit.closed) {
+      this.sfx.timeover.play();
       this.repeatLevel();
     }
 
