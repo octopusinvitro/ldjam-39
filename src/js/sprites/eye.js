@@ -8,13 +8,13 @@ function Eye(game, x, y, keys, sfx) {
   this.game.physics.arcade.enable(this);
   this.body.setSize(32, 48);
   this.body.bounce.y = 0.2;
-  this.body.gravity.y = 700;
+  this.body.gravity.y = 1000;
   this.body.collideWorldBounds = true;
 
   this.animations.add('left', [0, 1, 2, 3], 10, true);
   this.animations.add('right', [5, 6, 7, 8], 10, true);
 
-  this.chargeTimeInSeconds = Phaser.Timer.SECOND * 4;
+  this.chargeTimeInSeconds = Phaser.Timer.SECOND * 2;
 };
 
 Eye.prototype = Object.create(Phaser.Sprite.prototype);
@@ -47,7 +47,7 @@ Eye.prototype._move = function() {
 Eye.prototype._jump = function(hitGround) {
   if (this.keys.up.isDown && this.body.touching.down && hitGround) {
     this.sfx.jump.play()
-    this.body.velocity.y = -600;
+    this.body.velocity.y = -700;
   }
 };
 

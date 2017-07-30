@@ -14,7 +14,7 @@ BatteryTimer.prototype.start = function() {
 
 BatteryTimer.prototype.tick = function() {
   this.battery -= 1;
-  this.batteryText.text = 'BATTERY: ' + this.battery;
+  this.batteryText.text = this.battery;
   if (this.battery == 0) {
     this.stop();
   }
@@ -29,9 +29,9 @@ BatteryTimer.prototype._setText = function() {
   var fontStyle = {
     font: '12px "Graduate"',
     fill: '#E99792',
-    fontSize: '12px'
+    fontSize: '32px'
   };
-  return this.game.add.text(64, 70, 'BATTERY: ' + this.maximumBattery, fontStyle);
+  return this.game.add.text(64, 58, this.maximumBattery, fontStyle);
 }
 
 module.exports = BatteryTimer;
