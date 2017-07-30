@@ -30,6 +30,14 @@ var PreloaderScene = {
     this.game.load.spritesheet('light', 'images/light.png', 40, 39);
     this.game.load.image('ground', 'images/ground.jpg');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
+
+    // audio assets
+    var sfx = {
+      'jump': 'jump.wav',
+    };
+    Object.keys(sfx).forEach(function (key) {
+      this.game.load.audio(key, 'audio/' + sfx[key]);
+    }.bind(this));
   },
 
   create: function () {

@@ -15,6 +15,9 @@ PlayScene = {
     this.currentLevel = levelIndex;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.keys = this.game.input.keyboard.createCursorKeys();
+    this.sfx = {
+      jump: this.game.add.audio('jump')
+    };
   },
 
   create: function () {
@@ -36,7 +39,7 @@ PlayScene = {
     this.game.physics.arcade.enable(this.ground);
     this.ground.body.immovable = true;
 
-    this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys);
+    this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys, this.sfx);
     this.game.add.existing(this.eye);
 
     this.timer = new BatteryTimer(this.game, 10);

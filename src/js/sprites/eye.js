@@ -1,8 +1,9 @@
 'use strict';
 
-function Eye(game, x, y, keys) {
+function Eye(game, x, y, keys, sfx) {
   Phaser.Sprite.call(this, game, x, y, 'eye');
   this.keys = keys;
+  this.sfx = sfx;
 
   this.game.physics.arcade.enable(this);
   this.body.setSize(32, 48);
@@ -45,6 +46,7 @@ Eye.prototype._move = function() {
 
 Eye.prototype._jump = function(hitGround) {
   if (this.keys.up.isDown && this.body.touching.down && hitGround) {
+    this.sfx.jump.play()
     this.body.velocity.y = -600;
   }
 };
