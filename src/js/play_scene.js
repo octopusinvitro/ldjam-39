@@ -5,6 +5,7 @@ var
   Circuit = require('./sprites/circuit.js'),
   Charger = require('./sprites/charger.js'),
   Eye = require('./sprites/eye.js'),
+  BatteryTimer = require('./battery_timer.js'),
   PlayScene
 ;
 
@@ -33,6 +34,9 @@ PlayScene = {
 
     this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys);
     this.game.add.existing(this.eye);
+
+    this.timer = new BatteryTimer(this.game, 10);
+    this.timer.start();
   },
 
   update: function () {
@@ -49,9 +53,17 @@ PlayScene = {
       this.circuit.close();
     }
 
+    if (this.timer.stopped) {
+      this.repeatLevel();
+    }
+
     if (hitCharger && this.circuit.closed) {
       this.eye.charge(this.charger.center());
     }
+  },
+
+  repeatLevel: function () {
+    this.game.state.restart(true, false, this.currentLevel);
   }
 };
 
