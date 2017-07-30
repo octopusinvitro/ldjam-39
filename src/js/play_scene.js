@@ -18,6 +18,7 @@ PlayScene = {
     this.sfx = {
       jump: this.game.add.audio('jump'),
       on: this.game.add.audio('on'),
+      charge: this.game.add.audio('charge')
     };
   },
 
@@ -68,6 +69,7 @@ PlayScene = {
     }
 
     if (hitCharger && this.circuit.closed) {
+      this.sfx.charge.play();
       this.eye.charge(this.charger.center());
       this.timer.stop();
       this.game.time.events.add(this.eye.chargeTimeInSeconds, this.nextLevel, this);
