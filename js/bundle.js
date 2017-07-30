@@ -8,7 +8,7 @@ function BatteryTimer(game, maximumBattery) {
 
 BatteryTimer.prototype.start = function() {
   this.battery = this.maximumBattery;
-  this.batteryText = this.game.add.text(16, 16, 'BATTERY: ' + this.maximumBattery, { fontSize: '12px', fill: '#E99792' });
+  this.batteryText = this._setText();
   this.batteryTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.tick, this);
   this.stopped = false;
 };
@@ -25,6 +25,15 @@ BatteryTimer.prototype.stop = function() {
   this.game.time.events.remove(this.batteryTimer);
   this.stopped = true;
 };
+
+BatteryTimer.prototype._setText = function() {
+  var fontStyle = {
+    font: '12px "Graduate"',
+    fill: '#E99792',
+    fontSize: '12px'
+  };
+  return this.game.add.text(64, 70, 'BATTERY: ' + this.maximumBattery, fontStyle);
+}
 
 module.exports = BatteryTimer;
 
@@ -54,12 +63,12 @@ var PreloaderScene = {
 
     // image assets
     // this.game.load.image('logo', 'images/phaser.png');
-    this.game.load.image('background:level1', 'images/bg1.png');
-    this.game.load.image('button', 'images/button.png');
-    this.game.load.image('circuit', 'images/circuit.png');
+    this.game.load.image('background:level1', 'images/bg1.jpg');
+    this.game.load.image('button1', 'images/button1.gif');
+    this.game.load.image('circuit', 'images/circuit.gif');
     this.game.load.image('charger', 'images/charger.png');
-    this.game.load.image('light', 'images/light.png');
-    this.game.load.image('ground', 'images/ground.png');
+    this.game.load.spritesheet('light', 'images/light.png', 40, 39);
+    this.game.load.image('ground', 'images/ground.jpg');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
   },
 
@@ -87,6 +96,7 @@ var
   Circuit = require('./sprites/circuit.js'),
   Charger = require('./sprites/charger.js'),
   Eye = require('./sprites/eye.js'),
+  Light = require('./sprites/light.js'),
   BatteryTimer = require('./battery_timer.js'),
   PlayScene
 ;
@@ -100,7 +110,9 @@ PlayScene = {
 
   create: function () {
     this.game.add.sprite(0, 0, 'background:level1');
-    this.game.add.sprite(583, 180, 'light');
+
+    this.light = new Light(this.game, 583, 180);
+    this.game.add.existing(this.light);
 
     this.charger = new Charger(this.game, 583, 430);
     this.game.add.existing(this.charger);
@@ -108,12 +120,12 @@ PlayScene = {
     this.circuit = new Circuit(this.game, 393, 200);
     this.game.add.existing(this.circuit);
 
+    this.button = new Button(this.game, 380, this.game.world.height - 100 - 30, 'button1');
+    this.game.add.existing(this.button);
+
     this.ground = this.game.add.sprite(0, this.game.world.height - 100, 'ground');
     this.game.physics.arcade.enable(this.ground);
     this.ground.body.immovable = true;
-
-    this.button = new Button(this.game, 380, this.game.world.height - 100 - 30);
-    this.game.add.existing(this.button);
 
     this.eye = new Eye(this.game, 32, this.game.world.height - 150, this.keys);
     this.game.add.existing(this.eye);
@@ -134,6 +146,7 @@ PlayScene = {
     if (hitButton && this.button.body.touching.up) {
       this.button.press();
       this.circuit.close();
+      this.light.turnOn();
     }
 
     if (this.timer.stopped && !this.circuit.closed) {
@@ -158,11 +171,11 @@ PlayScene = {
 
 module.exports = PlayScene;
 
-},{"./battery_timer.js":1,"./sprites/button.js":4,"./sprites/charger.js":5,"./sprites/circuit.js":6,"./sprites/eye.js":7}],4:[function(require,module,exports){
+},{"./battery_timer.js":1,"./sprites/button.js":4,"./sprites/charger.js":5,"./sprites/circuit.js":6,"./sprites/eye.js":7,"./sprites/light.js":8}],4:[function(require,module,exports){
 'use strict';
 
-function Button(game, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'button');
+function Button(game, x, y, sprite) {
+  Phaser.Sprite.call(this, game, x, y, sprite);
 
   this.game.physics.arcade.enable(this);
   this.body.immovable = true;
@@ -185,6 +198,7 @@ function Charger(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'charger');
 
   this.game.physics.arcade.enable(this);
+  this.body.setSize(200, 300);
   this.body.immovable = true;
   this.body.customSeparateX = true;
   this.body.customSeparateY = true;
@@ -276,5 +290,30 @@ Eye.prototype._jump = function(hitGround) {
 };
 
 module.exports = Eye;
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+function Light(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'light');
+
+  this.game.physics.arcade.enable(this);
+  this.animations.add('off', [0], 10, true);
+  this.animations.add('on', [1], 10, true);
+  this.animations.play('off')
+};
+
+Light.prototype = Object.create(Phaser.Sprite.prototype);
+Light.prototype.constructor = Light;
+
+Light.prototype.turnOn = function() {
+  this.animations.play('on');
+};
+
+Light.prototype.turnOff = function() {
+  this.animations.play('off');
+};
+
+module.exports = Light;
 
 },{}]},{},[2]);
