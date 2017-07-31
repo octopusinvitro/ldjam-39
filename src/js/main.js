@@ -1,9 +1,14 @@
 'use strict';
 
-var Level1 = require('./level1.js');
+var
+  startGame,
+  BootScene,
+  PreloaderScene,
+  Level1 = require('./level1.js')
+;
 
 
-var BootScene = {
+BootScene = {
   preload: function () {
     // load here assets required for the loading screen
     this.game.load.image('preloader_bar', 'images/preloader_bar.png');
@@ -15,7 +20,7 @@ var BootScene = {
 };
 
 
-var PreloaderScene = {
+PreloaderScene = {
   preload: function () {
     this.loadingBar = this.game.add.sprite(0, 240, 'preloader_bar');
     this.loadingBar.anchor.setTo(0, 0.5);
@@ -50,7 +55,7 @@ var PreloaderScene = {
 };
 
 
-var startGame = function () {
+startGame = function () {
   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
