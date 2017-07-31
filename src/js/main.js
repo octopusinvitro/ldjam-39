@@ -36,6 +36,7 @@ PreloaderScene = {
     this.game.load.image('charger', 'images/charger.png');
     this.game.load.spritesheet('light', 'images/light.png', 40, 39);
     this.game.load.image('ground', 'images/ground.jpg');
+    this.game.load.image('platform', 'images/platform.gif');
     this.game.load.spritesheet('eye', 'images/eye.png', 32, 48);
 
     // audio assets
