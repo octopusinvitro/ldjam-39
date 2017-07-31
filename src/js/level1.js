@@ -49,6 +49,10 @@ Level1 = {
 
     this.timer = new BatteryTimer(this.game, 10);
     this.timer.start();
+
+    this.recycledItems = {
+      batterytimer: BatteryTimer,
+    };
   },
 
   update: function () {
@@ -87,7 +91,7 @@ Level1 = {
 
   nextLevel: function () {
     this.backgroundMusic.stop();
-    this.game.state.start('level1', true, false);
+    this.game.state.start('level2', true, false, this.recycledItems);
   },
 };
 

@@ -4,7 +4,8 @@ var
   startGame,
   BootScene,
   PreloaderScene,
-  Level1 = require('./level1.js')
+  Level1 = require('./level1.js'),
+  Level2 = require('./level2.js')
 ;
 
 
@@ -29,6 +30,7 @@ PreloaderScene = {
     // image assets
     // this.game.load.image('logo', 'images/phaser.png');
     this.game.load.image('background:level1', 'images/bg1.jpg');
+    this.game.load.image('background:level2', 'images/bg2.jpg');
     this.game.load.image('button1', 'images/button1.gif');
     this.game.load.image('circuit', 'images/circuit.gif');
     this.game.load.image('charger', 'images/charger.png');
@@ -61,6 +63,7 @@ startGame = function () {
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);
   game.state.add('level1', Level1);
+  game.state.add('level2', Level2);
 
   game.state.start('boot');
 };
